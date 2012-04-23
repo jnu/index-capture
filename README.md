@@ -2,7 +2,7 @@
 
 Bookmarklet for quickly archiving directories.
 ## LIMITATIONS & BUGS
- ---
+
 1. The script uses JSZip to perform zipping client side. Zipping client-side is
 kind of a funky idea in the first place, and as you'd expect, the major problem
 with it is file size. Anything more than one or two MBs simply will not work.
