@@ -263,7 +263,7 @@ window.BS = {
 						BS.loadJQueryPlugin(parts[1], load_another);
 						break;
 					default:
-						BS.loadScript(parts[0]+parts[1], load_another);
+						BS.loadScript(parts.join(':'), load_another);
 				}
 			}else{
 				BS.loadScript(lib, load_another);
