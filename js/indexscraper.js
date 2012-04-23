@@ -355,7 +355,7 @@ var installScraper = function(jqlib) {
 				document.write(html);
 				document.close();
 				recurse(pathsQueue, function(links) {
-					links.unshift('<div><a href="'+window.location.href+'">INDEX</a></div>');
+					links = '<div><a href="'+window.location.href+'">INDEX</a></div>'+links;
 					var loader_scr = '(function($){$("#download").click(function() { var name = ($("#name").val()!="")? $("#name").val() : "download"; $("#queue").submitLinkDownloadRequest(name);}); $("#filter").button(); $("#filter").click(function() { $("#queue").filterLinks("#tagsbox .tag span"); $("#count span").text($("#queue").find("a").length-1); }); $("#tags").tagsInput(); $("#count span").text($("#queue").find("a").length-1);})(BS.$);';
 					var child_code = '<div id="upper"><div id="count">Found <span></span> links (not counting index itself)</div><input type="text" id="name" value="'+main_part+'" /><div><button id="filter">Filter Results</button><div id="tagsbox"><input name="tags" id="tags" /></div></div><button id="download">Download</button></div><div id="queue">' + links + '</div><script type="text/javascript">'+loader_scr+'</script>';
 					BS.styles.push("http://localhost/IndexScraper/css/jquery.tagsinput.css");
