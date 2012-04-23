@@ -355,6 +355,7 @@ var installScraper = function(jqlib) {
 				document.write(html);
 				document.close();
 				recurse(pathsQueue, function(links) {
+					links.unshift('<div><a href="'+window.location.href+'">INDEX</a></div>');
 					var loader_scr = '(function($){$("#download").click(function() { var name = ($("#name").val()!="")? $("#name").val() : "download"; $("#queue").submitLinkDownloadRequest(name);}); $("#filter").button(); $("#filter").click(function() { $("#queue").filterLinks("#tagsbox .tag span"); $("#count span").text($("#queue").find("a").length-1); }); $("#tags").tagsInput(); $("#count span").text($("#queue").find("a").length-1);})(BS.$);';
 					var child_code = '<div id="upper"><div id="count">Found <span></span> links (not counting index itself)</div><input type="text" id="name" value="'+main_part+'" /><div><button id="filter">Filter Results</button><div id="tagsbox"><input name="tags" id="tags" /></div></div><button id="download">Download</button></div><div id="queue">' + links + '</div><script type="text/javascript">'+loader_scr+'</script>';
 					BS.styles.push("http://localhost/IndexScraper/css/jquery.tagsinput.css");
@@ -392,7 +393,17 @@ var installScraper = function(jqlib) {
 					//var href = me.href;
 					//links.push([href, myname]);
 					$.get(me.href, function(data) {
-						zip.file(name+'-'+me.innerText.replace(/[^A-Z0-9]/i, ''), data);
+						// Submit asynchronous request for full HTML of page
+						var sname = name+'-'+me.innerText.replace(/[^a-z0-9]/ig, ''); // sanitized name
+						var n = 0;
+						while(zip.file(sname)!=null) {
+							// Avoid overwriting by tacking -n to end of file name
+							// (e.g. will name file 'index-2' if 'index' and 'index-1'
+							// are already used).
+							if(n++) sname = sname.substr(0, sname.lastIndexOf('-')); // get main part if -n is already on
+							sname+='-'+n;
+						}
+						zip.file(sname, data); // store data in file
 						cnt+=1;
 						$(me).addClass('ui-state-disabled');
 						var r = cnt/max_*100;
