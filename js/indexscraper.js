@@ -1,24 +1,27 @@
 /* File:         indexscraper.js
  * Author:       Joseph Nudell
- * Last Updated: April 13, 2012
+ * Last Updated: April 23, 2012
  *
  * REQUIREMENTS
  *  ---
- * downloader.php (or similar; see DOCUMENTATION to downloader.php)
+ * - Uses the zip creating functions of JSZip (included)
+ * - jQuery (tested on 1.7.1)
+ * - jQuery-UI (tested on 1.8.18)
  *
+ * WARNING
+ *  ---
+ * Script is very rough. Hope to polish soon. Documentation at least is correct.
  *
  * ABOUT
  *  ---
  * The purpose of this script is to extract a list of links from a table or
  * table-like structure (e.g., <ul/>, nested <div/>, etc.) from an HTML document.
- * The script is designed to be run from the bookmarklet included in this package.
- * Apart from the bookmarklet, the script depends upon a server-side downloader
- * which will execute the downloading and archiving of the links. A simple (but
- * entirely functional) PHP script that will perform such downloading and archiving
- * is included in this package. See this file (downloader.php) for some important
- * information regarding its use and limitations.
+ * This code is loaded from a bookmarklet (see bookmarklet.js for more info).
  *
- *
+ * In order to limit the already excessive amount of scripts that must be loaded
+ * to get this app to work, all of the UI elements are generated at various places
+ * in this script. Very ugly but I've tried to comment pedantically.
+ * 
  * DOCUMENTATION
  *  ---
  * This script is designed as a jQuery plugin. IMPORTANTLY it does NOT install
@@ -189,8 +192,7 @@ var installScraper = function(jqlib) {
 			if(typeof(paths)=='undefined') paths = '';
 			if( $('#indexScraper_controlPanel').length<1 ) {
 				if( typeof(style_url)=='undefined' ) style_url = 'http://localhost/IndexScraper/css/controlpanel.css';
-				// Create a control panel (top bar) on the target page for proofing and load styles
-				// TODO: Current wrapping mechanism breaks certain pages (gibsondunn, for one). Fix!
+				// Create a control panel on the target page for proofing and load styles
 				// Styles must be saved in global namespace to be reloaded in the future.
 				// Unlike scripts, stylesheets are not applied to pages if their links
 				// are wiped from the document through e.g. document.open(). 
@@ -199,7 +201,6 @@ var installScraper = function(jqlib) {
 				var cp = document.createElement('div');
 				cp.setAttribute('id', 'indexScraper_controlPanel_contain');
 				cp.innerHTML = '<div id="indexScraper_controlPanel" class="ui-widget ui-corner-bottom ui-widget-header"></div>';
-				//$('body').wrapInner('<div id="indexScraper_targetBody" />');
 				document.getElementsByTagName('body')[0].appendChild(cp);
 				$('#indexScraper_controlPanel').html("<form id='cp_form'><div id='urlfields'><input type='text' id='url' class='ui-corner-all ui-form-default' /><input type='text' id='urlpattern' class='ui-form-default ui-corner-all' /></div><span id='pathbox'><input type='text' id='path' class='ui-form-default ui-corner-all' /></span><span id='test'>TEST</span><input type='submit' id='go' value='Go' class='ui-form-default' /><span id='subchk'><input type='checkbox' id='subindex' class='ui-form-default' />Sub-index?</span><span id='urlchk'><input type='checkbox' id='urlmacro' class='ui-form-default' />Url Macro?</span><input type='hidden' id='main_index' value='"+index+"' /><ol id='paths' style='visibility:hidden'>"+paths+"</ol></form>");
 				$('#indexScraper_controlPanel #go').button();
@@ -403,14 +404,6 @@ var installScraper = function(jqlib) {
 					});
 				});
 			};
-			/*var recurse = function(links, progress, callback) {
-				if( links.length == 0 ) return callback();
-				$.get(links[0][0], function(data) {
-					zip.file(name+'-'+links[0][1].replace(/[^\w\d]/, '').replace(/\s+/, ''), data);
-					if( typeof(progress)!='undefined' && progress!=null ) progress();
-					return recurse(links.splice(1), progress, callback);
-				});
-			};*/
 			// Call downloader:
 			traverse(this,
 				function() {
@@ -420,12 +413,10 @@ var installScraper = function(jqlib) {
 					location.href="data:application/zip;base64,"+content;
 				}
 			);
-			
-			
-			
+
 			/* // NOTE: downloader.php expects associative array as array[name] = href. Currently links array
-			   // is of the form array[0] = [href, name]. Change back if reverting to downloader.php!
-			$.post("http://localhost/IndexScraper/downloader.php?overwrite="+overwrite+"&name="+name,
+			   // is of the form array[0] = [href, name]. Change back if reverting to downloader.php! (But try to find a way not to have to revert do server-side scripting!)
+						$.post("http://localhost/IndexScraper/downloader.php?overwrite="+overwrite+"&name="+name,
 				   {'links': links},
 				   function(data) { alert("Response: "+data); });
 				   */
@@ -436,6 +427,7 @@ var installScraper = function(jqlib) {
 	
 		$.fn.makeLinksAbsolute = function(baseurl) {
 			// Make all links contained in this absolute with given baseurl
+			// VESTIGIAL? REMOVE?
 			if( !/\/$/.test(baseurl) ) {
 				// If baseurl does not end in a slash, it might be a document,
 				// not a directory. Make sure it is a directory.
@@ -637,7 +629,7 @@ var installScraper = function(jqlib) {
 		};
 		/// End functions
 		
-	})( jqlib ); // Install on given jQuery object
+	})( jqlib ); // Install the above in given jQuery object
 	
 	
 	
