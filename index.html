@@ -1,0 +1,98 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Index-capture by jnu</title>
+    
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Index-capture</h1>
+        <p>Bookmarklet for quickly archiving directories</p>
+        <p class="view"><a href="https://github.com/jnu/index-capture">View the Project on GitHub <small>jnu/index-capture</small></a></p>
+        <ul>
+          <li><a href="https://github.com/jnu/index-capture/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/jnu/index-capture/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/jnu/index-capture">Fork On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>index-capture</h1>
+
+<p>A bookmarklet for quickly archiving directories.</p>
+
+<h2>ABOUT</h2>
+
+<p>This bookmarklet provides a utility for archiving a list of pages from a directory. The project was motivated by the need to download a large number of webpages (in my case, basketball statistics) to store for further processing. I used to use iMacros for such purposes, but I realized that for the simple case of downloading all links in a directory, iMacros was overkill. It seemed a simpler, quicker, and more elegant approach to write a piece of JavaScript that can be launched from a bookmarklet to traverse the index and create an archive. So that's what I wrote. I'm in the process of adding more features (i.e., ruining the elegance of simplicity) to make the code more robust.</p>
+
+<h2>INSTALLATION</h2>
+
+<p>Install the bookmarklet by copying and pasting the minified JavaScript into the location field of a new bookmark in your favorite browser. Note that I am assuming either Chrome or Firefox is your favorite browser (but see COMPATIBILITY below).</p>
+
+<h2>USAGE</h2>
+
+<p>Navigate to a directory containing a list of links to pages you wish to archive. Select one of these links. Execute the bookmarklet. The tool will load its control panel (this might take a few seconds) and attempt to discern all the links on the page that are similar to the one you've selected. It will inform you of its findings in the input box in the left side of the panel. This is a CSS selector, identical to what you're accustomed to using in jQuery (it uses the selector in this box verbatim to select the links on the page). You can test whether the selector is what you're looking for by hovering your mouse over the "TEST" text on the control panel. This will highlight the links that are selected by this selector. You can adjust the path as needed to get all the links you need (and hopefully no more). The tool comes with James Podolsey's excellent :regex selector installed, so you can use this if you need some more power. Press "GO". The downloader panel will launch.</p>
+
+<p>In the downloader panel, you'll see a list of the links you intend to download. You have the option of this point of whittling down the list a bit more by using regular expressions targeted at either the href or the link text (more on this in REGEX FILTERS). Once you've gotten the list just as you want it, press "Download." The downloading will commence. When it is finished, a zip archive will be downloaded containing all of the links you requested.</p>
+
+<h2>REGEX FILTERS</h2>
+
+<p>You can filter a links queue in the downloader panel using targeted regular expressions. In particular, you can target either the href or the link text, or both. The syntax is as follows:</p>
+
+<p>In the tags input box, enter regular expressions in the typical manner, delimited by / /. Targetting flags must be prefixed to this expression with a colon, e.g.: "ru:/^mailto:/i" (with no quotation marks) will create a filter for anything in the mailto: URI, which would be useful if you were trying to download a list of biographies, but the (poorly designed) webpage had their email addresses contained within the same element as the bio link. </p>
+
+<p>Possible targetting flags (use one of the top two with one of the bottom two; omitted flags revert to default):</p>
+
+<ul>
+<li>t    "Text" - Tag is actually text, don't interpret it as RegExp</li>
+<li>r    "RegExp" - Tag is RegExp, interpret it as such (default).
+---</li>
+<li>u    "URL" - Target the href</li>
+<li>d    "Displayed" - Target the displayed text of the link</li>
+<li>b    "Both" - Target both href and displayed text (default).</li>
+</ul><h2>DETAILS, ISSUES, &amp; LIMITATIONS</h2>
+
+<p>This was the first time I've written in anything in JavaScript in about 10 years. I was amazed by all of the libraries that are currently available that made writing this code so much easier. At the same time, I was also a bit overwhelmed. I am certain I've missed some libraries that would simplify my code even more. In particular, there are three parts of my code that are a little buggy or limited:</p>
+
+<ul>
+<li><p>bootstrap.js -- I wrote this little library to defeat the race condition that crops up when you try to load multiple interdependent JavaScript libraries from a bookmarklet. It's just a chain loader that accepts a queue of scripts (or stylesheets, even though their order doesn't (ever?) matter) and loads them sequentially. More interestingly, it is meant to avoid conflicts with multiple versions of libraries such as jQuery. The idea is that the bookmarklet should not break any of the functionality of the target page, which overwriting the target page's version of a library with a different one could very easily do. Sadly, there is at least one problem with this code, though I haven't quite figured out what it is (it breaks when trying to install certain jQuery plugins). It seems like another race condition, which is unsurprising. I hope to get this fixed soon.</p></li>
+<li><p>The JSZip library -- This is a great library written by Stuart Knightley. It creates archives on-the-fly on the client-side and makes them available for download once they are generated. This is exactly what I needed to do and I was surprised and delighted when I found it. There are two limitations, however, which appear to have no pure-JS solutions: first, since the library makes use of the data: URI to push archives to the client as a download, the archives are anonymous; you cannot specify their name. Secondly, the library will not work when the size of the archive grows beyond just a couple of megabytes. It is not surprising at all that this should be an issue, and I'm not sure any slick hacks could fix it, at least with pure-JS. The solution to the former problem is to use Downloadify, a library which uses a Flash object to prepare the download. This enables custom naming, which is nice. The latter problem might be a bit trickier to solve. I am currently investigation a Flash-based solution which should at least mitigate the size problem (i.e., increase the maximum possible archive size). </p></li>
+<li><p>Cross-domain issues. One motivation for writing a bookmark for this was that it would allow for downloading the links incredibly easily by using AJAX requests AS LONG AS THE LINKS ARE ON THE SAME DOMAIN AS THE INDEX PAGE. Your browser will forbid you from completing cross-domain AJAX requests pursuant to the same-origin policy. As a result, this bookmarklet is not ideal for downloading things like SERPs. Of course, anything is possible: if you are desperate, scoot around the SOP in the usual way, by loading the target page through a proxy and running the bookmarklet there.</p></li>
+</ul><p>Apart from those bugs, the source at the moment is sloppy and unrefined. There are some vestigial methods that unnecessarily clutter the $.fn namespace. Hopefully I'll have time to do some tidying up soon.</p>
+
+<h2>COMPATIBILITY</h2>
+
+<p>The idea of this project, as is the goal of every good project, is to be entirely cross-browser compatible. So far I have only been working in Chrome and doing occasional tests in Firefox. I know there will be issues with installing the bookmarklet in older versions of IE, since the bookmarklet currently exceeds their size limitations. I have no idea how things look in Safari or Opera. I can't think of a reason why it wouldn't work on these browsers, but that certainly doesn't mean they will.</p>
+
+<h2>FUTURE</h2>
+
+<p>The user will notice a couple of checkboxes on the panel right now, saying "Sub-index?"
+and "Url-Macro?" These reflect future features. They are in development, so don't
+try to use them. The former will allow you to traverse sub-directories: for example,
+if a directory page has an alphabetical index of sub-directories and does not allow
+you to see all of its contents at once, you will still be able to archive everything
+by defining two (or more) levels of traversal. The "Url-macro?" feature will allow
+you to input a URL-template such as "<a href="http://www.example.com/?a=%7B1%7D">http://www.example.com/?a={1}</a>" and a range
+such as "A-Z" in order to traverse sub-directories more programmatically (which 
+is sometimes necessary in order to pass other options to the server such as "show
+all"). THESE CAPABILITIES ARE IN PROGRESS! HOPEFULLY THEY WILL BE FINISHED SOON!</p>
+
+<p>More documentation is available in the source. I will be extracting and consolidating these documentations in the near future.</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/jnu">jnu</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
