@@ -103,7 +103,7 @@ javascript:(function _(){
 	// WARNING: Including straight from GitHub is ONLY FOR DEVELOPMENT PURPOSES!
 	// This is NOT a good idea if you are trying to use a stable version of
 	// the bookmarklet! Update the base URL appropriately!
-	var base_url = "https://raw.github.com/jnu/index-capture/master/";
+	var base_url = "http://jnu.github.com/index-capture/";
 	// -------------------------------------------- //
 	var bootstrap_lib = base_url+"js/bootstrap.js";
 	var scraper_lib = base_url+"js/indexscraper.js";
