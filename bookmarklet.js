@@ -106,12 +106,8 @@ javascript:(function _(){
 	var base_url = "http://jnu.github.com/index-capture/";
 	// -------------------------------------------- //
 	var bootstrap_lib = base_url+"js/bootstrap.js";
-	var scraper_lib = base_url+"js/indexscraper.js";
-	var jszip = base_url+"js/jszip.js";
-	var jszip2 = base_url+"js/jszip-deflate.js";
+	var scripts = ["jQuery:1.7.1", "jQueryUI:1.8.18", base_url+"js/jszip.js", base_url+"js/jszip-deflate.js",base_url+"js/indexscraper.js"]; 
 	var styles = [base_url+"css/controlpanel.css", base_url+"css/sunny/style.css"];
-	var jquery_version = "jQuery:1.7.1";
-	var jqueryui_version = "jQueryUI:1.8.18";
 	
 	var get_links = function() {
 		// Executes once dependencies are loaded
@@ -119,7 +115,7 @@ javascript:(function _(){
 			// --- PAYLOAD --- //
 			var el = $(window).getSelectedElement();
 			var path = $(el).getPath(true);
-			$('body').createControlPanel(styles, _).path(path);
+			$('body').createControlPanel(styles, scripts, _).path(path);
 			// --- END PAYLOAD --- //
 		})( BS.$ ); // Using bootstrapped jQuery
 	};

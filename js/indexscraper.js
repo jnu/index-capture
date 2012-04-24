@@ -186,17 +186,21 @@ var installScraper = function(jqlib) {
 	(function( $ ) {
 		
 		/// Control Panel Functions ///
-		$.fn.createControlPanel = function(style_urls, code, index, paths) {
+		$.fn.createControlPanel = function(style_urls, script_urls, code, index, paths) {
 			if(typeof(code)=='undefined') code = function(){ return false; };
 			if(typeof(index)=='undefined') index = window.location.href;
 			if(typeof(paths)=='undefined') paths = '';
 			if( $('#indexScraper_controlPanel').length<1 ) {
 				if( typeof(style_urls)=='undefined' ) style_urls = ['http://jnu.github.com/index-capture/css/controlpanel.css'];
+				if( typeof(script_urls)=='undefined' ) script_urls = [];
 				// Create a control panel on the target page for proofing and load styles
 				// Styles must be saved in global namespace to be reloaded in the future.
 				// Unlike scripts, stylesheets are not applied to pages if their links
 				// are wiped from the document through e.g. document.open(). 
+				// UPDATE: Mozilla will throw cleared-scope error if scripts are not loaded
+				// after doument.open()! Chrome does not do this! Save Scripts too!
 				BS.styles = style_urls;
+				BS.scripts = script_urls;
 				BS.loadStyles(BS.styles);
 				var cp = document.createElement('div');
 				cp.setAttribute('id', 'indexScraper_controlPanel_contain');
@@ -360,7 +364,8 @@ var installScraper = function(jqlib) {
 					var child_code = '<div id="upper"><div id="count">Found <span></span> links (not counting index itself)</div><input type="text" id="name" value="'+main_part+'" /><div><button id="filter">Filter Results</button><div id="tagsbox"><input name="tags" id="tags" /></div></div><button id="download">Download</button></div><div id="queue">' + links + '</div><script type="text/javascript">'+loader_scr+'</script>';
 					BS.styles.push("http://jnu.github.com/index-capture/css/jquery.tagsinput.css");
 					BS.loadStyles(BS.styles);
-					BS.loadLibs(["jQueryPlugin:http://jnu.github.com/index-capture/js/jquery.tagsinput.min.js"], function() {
+					BS.scripts.push("jQueryPlugin:http://jnu.github.com/index-capture/js/jquery.tagsinput.min.js");
+					BS.loadLibs(BS.scripts, function() {
 						BS.$('body').append('<div id="downloader_panel"/>');
 						BS.$('#downloader_panel').dialog({height: 'auto', width: '400px', closeOnEscape: true, minHeight: '300px', modal: true, autoOpen: true, title: 'Downloader', position: 'top'});
 						BS.$('#downloader_panel').html(child_code);
