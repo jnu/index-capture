@@ -1,0 +1,83 @@
+@charset "utf-8";
+/* CSS Document */
+
+div#indexScraper_controlPanel {
+	display: block !important;
+	padding: 0 !important;
+	margin: 0 !important;
+	width: 100%;
+	height: 34px;
+	position: fixed;
+	top: 0;
+	left: 0;
+	background-color: #600;
+	font-size: 12pt !important;
+	z-index: 9999;
+	color: #fff;
+}
+
+div#indexScraper_controlPanel #path {
+	width: 60%;
+	left: 5px;
+	top: 1px;
+	line-height: 18px;
+	height: 26px !important;
+	position: absolute;
+	border: thin solid black;
+	font-size: 12px !important;
+}
+
+div#indexScraper_controlPanel input[type=submit] {
+	position: absolute;
+	left: 61%;
+	top: 2px;
+	height: 26px !important;
+	background-color: #C00;
+	border: thin solid #900;
+}
+
+div#indexScraper_controlPanel #test {
+	position: absolute;
+	top: 2px;
+	left: 65%;
+	color: #fff;
+	font-weight: bold;
+	border: thin solid #f00;
+}
+
+span#subchk {
+	position: absolute;
+	right: 120px;	
+	top: 2px;
+}
+span#urlchk {
+	position: absolute;
+	right: 10px;
+	top: 2px;
+}
+
+div#indexScraper_targetBody {
+	position: relative;
+	top: 28px;
+}
+
+a.ixsc_highlight {
+	background-color: #FC3;
+}
+
+
+
+
+
+
+/* ************************************************************ */
+/* Styles for Loader (Download Queue) */
+
+/*
+div#downloader_panel {
+	position: absolute;
+	padding: 15px;
+	background-color: whitesmoke;
+	top: -100px;
+	z-index: 100000;
+}*/
