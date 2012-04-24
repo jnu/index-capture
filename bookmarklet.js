@@ -130,7 +130,7 @@ javascript:(function _(){
 		script.onload = script.onreadystatechange = function() {
 			if( !done && ( !this.readyState || this.readyState == "loaded" || this.readyState == "complete") ) {
 				done = true;
-				BS.loadLibs([jquery_version, jqueryui_version, jszip, jszip2, scraper_lib], function() {
+				BS.loadLibs(scripts, function() {
 					installScraper(BS.$);
 					callback();
 				});
