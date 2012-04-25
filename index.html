@@ -50,18 +50,18 @@
 
 <p>In the tags input box, enter regular expressions in the typical manner, delimited by / /. Targetting flags must be prefixed to this expression with a colon, e.g.: "ru:/^mailto:/i" (with no quotation marks) will create a filter for anything in the mailto: URI, which would be useful if you were trying to download a list of biographies, but the (poorly designed) webpage had their email addresses contained within the same element as the bio link. </p>
 
-<p>Possible targetting flags (use one of the top two with one of the bottom two; omitted flags revert to default):</p>
+<p>Possible targetting flags (use one of the top two with one of the bottom three; omitted flags revert to default):</p>
 
 <ul>
 <li>t    "Text" - Tag is actually text, don't interpret it as RegExp</li>
-<li>r    "RegExp" - Tag is RegExp, interpret it as such (default).
----</li>
+<li>r    "RegExp" - Tag is RegExp, interpret it as such (default).</li>
+<li>---</li>
 <li>u    "URL" - Target the href</li>
 <li>d    "Displayed" - Target the displayed text of the link</li>
 <li>b    "Both" - Target both href and displayed text (default).</li>
 </ul><h2>DETAILS, ISSUES, &amp; LIMITATIONS</h2>
 
-<p>This was the first time I've written in anything in JavaScript in about 10 years. I was amazed by all of the libraries that are currently available that made writing this code so much easier. At the same time, I was also a bit overwhelmed. I am certain I've missed some libraries that would simplify my code even more. In particular, there are three parts of my code that are a little buggy or limited:</p>
+<p>This was the first time I've written in anything in JavaScript in about 10 years. I was amazed by all of the libraries that are currently available that made writing this code so much easier. At the same time, I was a bit overwhelmed. I am certain I've missed some libraries that would simplify my code even more. In particular, there are three parts of my code that are a little buggy or limited:</p>
 
 <ul>
 <li><p>bootstrap.js -- I wrote this little library to defeat the race condition that crops up when you try to load multiple interdependent JavaScript libraries from a bookmarklet. It's just a chain loader that accepts a queue of scripts (or stylesheets, even though their order doesn't (ever?) matter) and loads them sequentially. More interestingly, it is meant to avoid conflicts with multiple versions of libraries such as jQuery. The idea is that the bookmarklet should not break any of the functionality of the target page, which overwriting the target page's version of a library with a different one could very easily do. Sadly, there is at least one problem with this code, though I haven't quite figured out what it is (it breaks when trying to install certain jQuery plugins). It seems like another race condition, which is unsurprising. I hope to get this fixed soon.</p></li>
