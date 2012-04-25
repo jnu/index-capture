@@ -419,7 +419,7 @@ var installScraper = function(jqlib) {
 			$('#downloader_panel #progressbar').progressbar();
 			//var zip = new JSZip();
 			// INIT FLASH ZIP
-			$('#indexCapture_icHelper').createZip(name);
+			$('#ichelper').createZip(name);
 			var traverse = function(el, callback) {
 				var cnt = 0;
 				var max_ = el.find('a').length;
@@ -442,7 +442,7 @@ var installScraper = function(jqlib) {
 						zip.file(sname, data); // store data in file
 						*/
 						var sname = me.innerText.replace(/[^a-z0-9]/ig, '');
-						$('#indexCapture_icHelper').addFileToZip(sname, data); // ICHELPER
+						$('#ichelper').addFileToZip(sname, data); // ICHELPER
 						cnt+=1;
 						$(me).addClass('ui-state-disabled');
 						var r = cnt/max_*100;
@@ -463,7 +463,7 @@ var installScraper = function(jqlib) {
 					var content = zip.generate({base64:true, compression:'DEFLATE'});
 					location.href="data:application/zip;base64,"+content;
 					*/
-					$('#indexCapture_icHelper').generateZip();
+					$('#ichelper').generateZip();
 				}
 			);
 
