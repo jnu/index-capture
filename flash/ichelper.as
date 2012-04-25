@@ -1,12 +1,12 @@
-﻿package
-{
+﻿package {
 	import flash.external.ExternalInterface;
 	import flash.net.FileReference;
 	import flash.utils.ByteArray;
 	import flash.net.FileReference;
-	import org.as3commons.zip;
+	import flash.display.MovieClip;
+	//import org.as3commons.zip;
 	
-	public class ICHelper
+	public class ICHelper extends MovieClip
 	{
 		private var zip:Zip;
 		private var prefix:String;
@@ -14,10 +14,10 @@
 		
 		public function ICHelper()
 		{
-			addCallbacks();
+			return;
 		}
 		
-		public function create(myPrefix:String="zip")
+		public function create(myPrefix:String="zip"):void
 		{
 			zip = new Zip();
 			prefix = myPrefix;
@@ -50,17 +50,18 @@
 			return true;
 		}
 		
-		private function addCallbacks()
+		public function addCallbacks():void
 		{
 			if( ExternalInterface.available )
 			{
 				ExternalInterface.addCallback('createZip', create);
 				ExternalInterface.addCallback('addFileToZip', addFile);
 				ExternalInterface.addCallback('generateZip', generate);
+				ExternalInterface.call('console.log', "Flash Zip Helper: Adding callbacks");
 			}
 		}
 		
-		private function toJS(status:Object):void
+		private function toJS(status:Object):Object
 		{
 			// Send something to JavaScript
 			if( ExternalInterface.available )
