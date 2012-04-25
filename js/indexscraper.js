@@ -1,6 +1,6 @@
 /* File:         indexscraper.js
  * Author:       Joseph Nudell
- * Last Updated: April 23, 2012
+ * Last Updated: April 24, 2012
  *
  * REQUIREMENTS
  *  ---
