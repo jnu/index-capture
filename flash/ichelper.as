@@ -14,7 +14,7 @@
 		
 		public function ICHelper()
 		{
-			return;
+			addCallbacks();
 		}
 		
 		public function create(myPrefix:String="zip"):void
@@ -61,7 +61,7 @@
 			}
 		}
 		
-		private function toJS(status:Object):Object
+		public function toJS(status:Object):Object
 		{
 			// Send something to JavaScript
 			if( ExternalInterface.available )
