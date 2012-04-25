@@ -389,7 +389,6 @@ var installScraper = function(jqlib) {
 				createPanelFn();
 			}
 				
-			//}); // DISABLED MAIN INDEX REFRESH TO SAVE STATE
 		};
 		
 		
