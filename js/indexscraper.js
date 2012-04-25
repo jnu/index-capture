@@ -353,11 +353,8 @@ var installScraper = function(jqlib) {
 				}
 			}
 			
-			// Execute
-			$.get(cur_url, function(html) {
-				document.open();
-				document.write(html);
-				document.close();
+			
+			var createPanelFn = function() {
 				recurse(pathsQueue, function(links) {
 					links = '<div><a href="'+window.location.href+'">INDEX</a></div>'+links;
 					var loader_scr = '(function($){$("#download").click(function() { var name = ($("#name").val()!="")? $("#name").val() : "download"; $("#queue").submitLinkDownloadRequest(name);}); $("#filter").button(); $("#filter").click(function() { $("#queue").filterLinks("#tagsbox .tag span"); $("#count span").text($("#queue").find("a").length-1); }); $("#tags").tagsInput(); $("#count span").text($("#queue").find("a").length-1);})(BS.$);';
@@ -374,7 +371,25 @@ var installScraper = function(jqlib) {
 					//wndw.document.write(child_code);
 					//return $(wndw);
 				});
-			});
+			};
+			
+			// Execute
+			if( pathsQueue.length>1 ) {
+				// Only reload main index if there are multiple pages to be looked at
+				// => This means we are probably not seeing the main index page on the screen right now.
+				$.get(cur_url, function(html) {
+					document.open();
+					document.write(html);
+					document.close();
+					createPanelFn();
+				});
+			}else {
+				// Otherwise just execute the function to recurse the list of links.
+				// This will prevent asynchronously loaded links from an index being lost upon refresh.
+				createPanelFn();
+			}
+				
+			//}); // DISABLED MAIN INDEX REFRESH TO SAVE STATE
 		};
 		
 		
