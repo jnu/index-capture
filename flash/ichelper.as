@@ -12,6 +12,11 @@
 		private var prefix:String;
 		private var init:Boolean = false;
 		
+		public function ICHelper()
+		{
+			addCallbacks();
+		}
+		
 		public function create(myPrefix:String="zip")
 		{
 			zip = new Zip();
@@ -35,7 +40,7 @@
 			return toJS(true);
 		}
 		
-		private function generate():Boolean
+		public function generate():Boolean
 		{
 			if(!init) return toJS(false);
 			var file = new FileReference();
@@ -43,6 +48,16 @@
 			zip.serialize(bytes);
 			file.save(bytes, prefix+".zip");
 			return true;
+		}
+		
+		private function addCallbacks()
+		{
+			if( ExternalInterface.available )
+			{
+				ExternalInterface.addCallback('createZip', create);
+				ExternalInterface.addCallback('addFileToZip', addFile);
+				ExternalInterface.addCallback('generateZip', generate);
+			}
 		}
 		
 		private function toJS(status:Object):void

@@ -1,6 +1,6 @@
 /* File:         bootstrap.js
  * Author:       Joseph Nudell
- * Last Updated: April 23, 2012
+ * Last Updated: April 25, 2012
  *
  *
  * DOCUMENTATION
@@ -223,6 +223,13 @@ window.BS = {
 	},
 	
 	
+	loadSWFObject: function(version, callback) {
+		// Installs SWFObject
+		var swfobj = "http://ajax.googleapis.com/ajax/libs/swfobject/"+version+"/swfobject.js";
+		BS.loadScript(swfobj, callback);
+	},
+	
+	
 	loadJQueryPlugin: function(url, callback) {
 		// Temporarily aliases BS.$ to jQuery to install plugin, does not
 		// interfere with target page's jQuery.
@@ -258,6 +265,8 @@ window.BS = {
 					case "jQueryUI":
 						BS.loadJQueryUI(parts[1], load_another);
 						break;
+					case "SWFObject":
+						BS.loadSWFObject(parts[1], load_another);
 						// TODO - add functions for other common libs
 					case "jQueryPlugin":
 						BS.loadJQueryPlugin(parts[1], load_another);

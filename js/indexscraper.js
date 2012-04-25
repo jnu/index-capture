@@ -367,6 +367,17 @@ var installScraper = function(jqlib) {
 						BS.$('#downloader_panel').dialog({height: 'auto', width: '400px', closeOnEscape: true, minHeight: '300px', modal: true, autoOpen: true, title: 'Downloader', position: 'top'});
 						BS.$('#downloader_panel').html(child_code);
 						BS.$('#download').button();
+						
+						// Insert Flash object into page
+						BS.$('body').append('<div id="indexCapture_icHelper"><p>You must update your Flash player!</p></div>');
+						var flashvars = {},
+							params = {},
+							attributes = {};
+						params.allowscriptaccess = "always";
+						params.allownetworking = "all";
+						attributes.id = "ichelper";
+						swfobject.embedSWF("https://github.com/jnu/index-capture/raw/master/flash/ichelper.swf",
+										   "indexCapture_icHelper", "1", "1", "10.0.0", false, flashvars, params, attributes);
 					});
 					//wndw.document.write(child_code);
 					//return $(wndw);
@@ -400,10 +411,15 @@ var installScraper = function(jqlib) {
 			if( typeof(name)=='undefined' ) name = 'dl';
 			if( typeof(overwrite)=='undefined' ) overwrite = false;
 			
-			// USE $.GET AND JSZIP FOR IN-HOUSE ZIPPING! DOPE!
+			// Flash should be inserted already
+			
+			// XXXXXXXXXXXXXXXXXXXXX USE $.GET AND JSZIP FOR IN-HOUSE ZIPPING
+			// Use $.GET and AS3 helper for client-side zipping
 			$('#downloader_panel #upper').html('<div id="progressbar"/>');
 			$('#downloader_panel #progressbar').progressbar();
-			var zip = new JSZip();
+			//var zip = new JSZip();
+			// INIT FLASH ZIP
+			$('#indexCapture_icHelper').createZip(name);
 			var traverse = function(el, callback) {
 				var cnt = 0;
 				var max_ = el.find('a').length;
@@ -413,6 +429,7 @@ var installScraper = function(jqlib) {
 					//links.push([href, myname]);
 					$.get(me.href, function(data) {
 						// Submit asynchronous request for full HTML of page
+						/*  JSZIP STUFF
 						var sname = name+'-'+me.innerText.replace(/[^a-z0-9]/ig, ''); // sanitized name
 						var n = 0;
 						while(zip.file(sname)!=null) {
@@ -423,6 +440,9 @@ var installScraper = function(jqlib) {
 							sname+='-'+n;
 						}
 						zip.file(sname, data); // store data in file
+						*/
+						var sname = me.innerText.replace(/[^a-z0-9]/ig, '');
+						$('#indexCapture_icHelper').addFileToZip(sname, data); // ICHELPER
 						cnt+=1;
 						$(me).addClass('ui-state-disabled');
 						var r = cnt/max_*100;
@@ -439,8 +459,11 @@ var installScraper = function(jqlib) {
 				function() {
 					// Completed: make zip available for download
 					$('#downloader_panel #progressbar').progressbar('value', 100);
+					/* JSZIP STUFF
 					var content = zip.generate({base64:true, compression:'DEFLATE'});
 					location.href="data:application/zip;base64,"+content;
+					*/
+					$('#indexCapture_icHelper').generateZip();
 				}
 			);
 
@@ -685,6 +708,9 @@ var installScraper = function(jqlib) {
 };
 
 
+function fromAS(obj) {
+	console.log("Received value from AS: "+obj);
+}
 
 // Set loaded global, so Bookmarklet knows.
 window.indexScraperLoaded = true;
