@@ -376,7 +376,7 @@ var installScraper = function(jqlib) {
 						params.allowscriptaccess = "always";
 						params.allownetworking = "all";
 						attributes.id = "ichelper";
-						swfobject.embedSWF("https://github.com/jnu/index-capture/raw/master/flash/ichelper.swf",
+						swfobject.embedSWF("http://localhost/IndexScraper/flash/ichelper.swf",
 										   "indexCapture_icHelper", "1", "1", "10.0.0", false, flashvars, params, attributes);
 					});
 					//wndw.document.write(child_code);
