@@ -1,6 +1,6 @@
 /* File:         bookmarklet.js
  * Author:       Joseph Nudell
- * Last Updated: April 23, 2012
+ * Last Updated: April 24, 2012
  *
  *
  * REQUIREMENTS
@@ -103,10 +103,11 @@ javascript:(function _(){
 	// WARNING: Including straight from GitHub is ONLY FOR DEVELOPMENT PURPOSES!
 	// This is NOT a good idea if you are trying to use a stable version of
 	// the bookmarklet! Update the base URL appropriately!
-	var base_url = "http://jnu.github.com/index-capture/";
+	var production_base = "https://raw.github.com/jnu/index-capture/master/"; // UNSTABLE SOURCE FILES! FOR DEVELOPMENT!
+	var base_url = "http://jnu.github.com/index-capture/"; // STABLE SOURCE FILES
 	// -------------------------------------------- //
-	var bootstrap_lib = base_url+"js/bootstrap.js";
-	var scripts = ["jQuery:1.7.1", "jQueryUI:1.8.18", base_url+"js/jszip.js", base_url+"js/jszip-deflate.js",base_url+"js/indexscraper.js"]; 
+	var bootstrap_lib = production_base+"js/bootstrap.js";
+	var scripts = ["jQuery:1.7.1", "jQueryUI:1.8.18", production_base+"js/jszip.js", production_base+"js/jszip-deflate.js",production_base+"js/indexscraper.js"]; 
 	var styles = [base_url+"css/controlpanel.css", base_url+"css/sunny/style.css"];
 	
 	var get_links = function() {
