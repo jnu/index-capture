@@ -29,22 +29,28 @@
 
 <p>A bookmarklet for quickly archiving directories.</p>
 
-<h2>ABOUT</h2>
+<h2><a name="updates">RECENT (NOTEWORTHY) UPDATES</a></h2>
+<ul>
+<li>4/26/2012 - I'm proud to say I've replaced <a href="http://stuartk.com/jszip/">JSZip</a> with a SWF object employing <a href="http://nochump.com/blog/archives/15">nochump</a>. Now archives can now exceed more than a megabyte (haven't found an upper bound yet, but the largest I've tried is ~8MB). This has created some
+issues with misfires in large downloads that hopefully will be resolved soon.
+</ul>
 
-<p>This bookmarklet provides a utility for archiving a list of pages from a directory. The project was motivated by the need to download a large number of webpages (in my case, basketball statistics) to store for further processing. I used to use iMacros for such purposes, but I realized that for the simple case of downloading all links in a directory, iMacros was overkill. It seemed a simpler, quicker, and more elegant approach to write a piece of JavaScript that can be launched from a bookmarklet to traverse the index and create an archive. So that's what I wrote. I'm in the process of adding more features (i.e., ruining the elegance of simplicity) to make the code more robust.</p>
+<h2><a name="about">ABOUT</a></h2>
 
-<h2>INSTALLATION</h2>
+<p>This bookmarklet provides a utility for archiving a list of pages from a directory. The project was motivated by the need to download a large number of webpages (in my case, basketball statistics) to store for further processing. I used to use <a href="http://www.iopus.com/imacros/firefox/">iMacros</a> for such purposes, but I realized that for the simple case of downloading all links in a directory, iMacros was overkill. It seemed a simpler, quicker, and more elegant approach to write a piece of JavaScript that can be launched from a bookmarklet to traverse the index and create an archive. So that's what I wrote. I'm in the process of adding more features (i.e., ruining the elegance of simplicity) to make the code more robust.</p>
 
-<p>Install the bookmarklet by copying and pasting the minified JavaScript into the location field of a new bookmark in your favorite browser. Note that I am assuming Google Chrome is your favorite browser (see COMPATIBILITY below).</p>
+<h2><a name="installation">INSTALLATION</a></h2>
 
-<h2>USAGE</h2>
+<p>Install the bookmarklet by copying and pasting the minified JavaScript into the location field of a new bookmark in your favorite browser. Note that I am assuming Google Chrome is your favorite browser (see <a href="#compatibility">COMPATIBILITY</a>).</p>
 
-<p>Navigate to a directory containing a list of links to pages you wish to archive. Select one of these links. Execute the bookmarklet. The tool will load its control panel (this might take a few seconds) and attempt to discern all the links on the page that are similar to the one you've selected. It will inform you of its findings in the input box in the left side of the panel. This is a CSS selector, identical to what you're accustomed to using in jQuery (it uses the selector in this box verbatim to select the links on the page). You can test whether the selector is what you're looking for by hovering your mouse over the "TEST" text on the control panel. This will highlight the links that are selected by this selector. You can adjust the path as needed to get all the links you need (and hopefully no more). The tool comes with James Podolsey's excellent :regex selector installed, so you can use this if you need some more power. Press "GO". The downloader panel will launch.</p>
+<h2><a name="usage">USAGE</a></h2>
 
-<p>In the downloader panel, you'll see a list of the links you intend to download. You have the option of this point of whittling down the list a bit more by using regular expressions targeted at either the href or the link text (more on this in REGEX FILTERS). Once you've gotten the list just as you want it, press "Download." The downloading will commence. When it is finished, a zip archive will be downloaded containing all of the links you requested.</p>
+<p>Navigate to a directory containing a list of links to pages you wish to archive. Select one of these links. Execute the bookmarklet. The tool will load its control panel (this might take a few seconds) and attempt to discern all the links on the page that are similar to the one you've selected. It will inform you of its findings in the input box in the left side of the panel. This is a CSS selector, identical to what you're accustomed to using in jQuery (it uses the selector in this box verbatim to select the links on the page). You can test whether the selector is what you're looking for by hovering your mouse over the "TEST" text on the control panel. This will highlight the links that are selected by this selector. You can adjust the path as needed to get all the links you need (and hopefully no more). The tool comes with James Padolsey's excellent <a href="http://james.padolsey.com/javascript/regex-selector-for-jquery/">:regex selector</a> installed, so you can use this if you need some more power. Press "GO". The downloader panel will launch.</p>
+
+<p>In the downloader panel, you'll see a list of the links you intend to download. You have the option of this point of whittling down the list a bit more by using regular expressions targeted at either the href or the link text (more on this in <a href="#regexfilters">REGEX FILTERS</a>). Once you've gotten the list just as you want it, press "Download." The downloading will commence. When the archive is prepared, the "Save" button will appear. Press this button and save the archive to the location of your choice. (Future versions may eliminate these extra button clicks.)</p>
 
 
-<h2>REGEX FILTERS</h2>
+<h2><a name="regexfilters">REGEX FILTERS</a></h2>
 
 <p>You can filter a links queue in the downloader panel using targeted regular expressions. In particular, you can target either the href or the link text, or both. The syntax is as follows:</p>
 
@@ -59,21 +65,41 @@
 <li>u    "URL" - Target the href</li>
 <li>d    "Displayed" - Target the displayed text of the link</li>
 <li>b    "Both" - Target both href and displayed text (default).</li>
-</ul><h2>DETAILS, ISSUES, &amp; LIMITATIONS</h2>
+</ul>
 
-<p>This was the first time I've written in anything in JavaScript in about 10 years. I was amazed by all of the libraries that are currently available that made writing this code so much easier. At the same time, I was a bit overwhelmed. I am certain I've missed some libraries that would simplify my code even more. In particular, there are three parts of my code that are a little buggy or limited:</p>
+<h2><a name="details">DETAILS, ISSUES, &amp; LIMITATIONS</a></h2>
+
+<p>This was the first time I've written in anything substantial in JavaScript in about 10 years. I was amazed by all 
+  of the libraries that are currently available that made writing this code so much easier. I was also
+  overwhelmed by all the libraries and I'm sure I've missed a few that would have saved me some time and energy.
+  Additionaly, until this project I was blissfully ignorant of how to do anything in ActionScript. After a couple of
+  days trying to sort it all out, I'll say that while AS itself is essentially trivially different from JavaScript,
+  learning how to make the parts of a Flash movie come together into a simple .swf somehow ended up being one of the
+  most painful experiences in all my days coding (right up there with the parenthetical nightmares I had while learning
+  Lisp). Anyway, fleeting is the memory of pain and everything works now. With the following limitations:
+  </p>
 
 <ul>
+<li><p>This script previously used Stuart Knightley's JSZip library to do client-side archiving. This had serious 
+  limitations on the maximum possible size of the archives and on the options for downloading the archive. I'm happy 
+  to say these limitations have been mitigated by using ActionScript to perform the zipping in lieu of JavaScript. I 
+  am now using dchang's <a href="http://nochump.com/blog/archives/15">nochump</a> library to do zipping. A nice 
+  side-effect of this is that I am also using Flash to execute the download of the archive, and Flash allows the user 
+  to select a location and name for the download (cf. Doug Neiner's <a href="https://github.com/dcneiner/Downloadify">Downloadify</a>,
+  which I am <i>not</i> using but is generally a very useful library). Of course, there are some kinks that need ironing:
+  on large downloads (several hundred pages), up to 10% of the pages fail to be archived. I hope to fix this soon.
+  Additionally, nochump is a rather old library and there are surely performance improvements to be made. Resolving
+  that issue is not a priority of mine, but maybe if I get bored this summer.
+</p></li>
 <li><p>bootstrap.js -- I wrote this little library to defeat the race condition that crops up when you try to load multiple interdependent JavaScript libraries from a bookmarklet. It's just a chain loader that accepts a queue of scripts (or stylesheets, even though their order doesn't (ever?) matter) and loads them sequentially. More interestingly, it is meant to avoid conflicts with multiple versions of libraries such as jQuery. The idea is that the bookmarklet should not break any of the functionality of the target page, which overwriting the target page's version of a library with a different one could very easily do. Sadly, there is at least one problem with this code, though I haven't quite figured out what it is (it breaks when trying to install certain jQuery plugins). It seems like another race condition, which is unsurprising. I hope to get this fixed soon.</p></li>
-<li><p>The JSZip library -- This is a great library written by Stuart Knightley. It creates archives on-the-fly on the client-side and makes them available for download once they are generated. This is exactly what I needed to do and I was surprised and delighted when I found it. There are two limitations, however, which appear to have no pure-JS solutions: first, since the library makes use of the data: URI to push archives to the client as a download, the archives are anonymous; you cannot specify their name. Secondly, the library will not work when the size of the archive grows beyond just a couple of megabytes. It is not surprising at all that this should be an issue, and I'm not sure any slick hacks could fix it, at least with pure-JS. The solution to the former problem is to use Downloadify, a library which uses a Flash object to prepare the download. This enables custom naming, which is nice. The latter problem might be a bit trickier to solve. I am currently investigation a Flash-based solution which should at least mitigate the size problem (i.e., increase the maximum possible archive size). </p></li>
 <li><p>Cross-domain issues. One motivation for writing a bookmark for this was that it would allow for downloading the links incredibly easily by using AJAX requests AS LONG AS THE LINKS ARE ON THE SAME DOMAIN AS THE INDEX PAGE. Your browser will forbid you from completing cross-domain AJAX requests pursuant to the same-origin policy. As a result, this bookmarklet is not ideal for downloading things like SERPs. Of course, anything is possible: if you are desperate, scoot around the SOP in the usual way, by loading the target page through a proxy and running the bookmarklet there.</p></li>
 </ul><p>Apart from those bugs, the source at the moment is sloppy and unrefined. There are some vestigial methods that unnecessarily clutter the $.fn namespace. Hopefully I'll have time to do some tidying up soon.</p>
 
-<h2>COMPATIBILITY</h2>
+<h2><a name="compatibility">COMPATIBILITY</a></h2>
 
 <p>The idea of this project, as is the goal of every good project, is to be entirely cross-browser compatible. So far I have only been testing in Chrome. I tried running it in Firefox and I got a cleared-scope error. I know what is causing this, but I haven't been able to solve the problem yet. I know there will be issues with installing the bookmarklet in older versions of IE, since the bookmarklet currently exceeds their size limitations. I have no idea whether the bookmarklet will run on Opera or Safari or new IE.</p>
 
-<h2>FUTURE</h2>
+<h2><a name="future">FUTURE</a></h2>
 
 <p>The user will notice a couple of checkboxes on the panel right now, saying "Sub-index?"
 and "Url-Macro?" These reflect future features. They are in development, so don't
@@ -86,7 +112,7 @@ such as "A-Z" in order to traverse sub-directories more programmatically (which
 is sometimes necessary in order to pass other options to the server such as "show
 all"). THESE CAPABILITIES ARE IN PROGRESS! HOPEFULLY THEY WILL BE FINISHED SOON!</p>
 
-<h2>DEMO</h2>
+<h2><a name="demo">DEMO</a></h2>
 
 <p>Demonstration archiving a list of postings on Craigslist. (Mute the audio, it's just "All Things Considered." Sorry about that.)<p>
 <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" width="800" height="600" id="movie_name" align="middle">
