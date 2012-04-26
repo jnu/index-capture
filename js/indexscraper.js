@@ -370,7 +370,7 @@ var installScraper = function(jqlib) {
 						BS.$('#download').button();
 						
 						// Insert Flash object into page
-						BS.$('body').append('<div id="indexCapture_icHelper"><p>You must update your Flash player!</p></div>');
+						BS.$('#downloader_panel').append('<div id="indexCapture_icHelper"><p>You must update your Flash player!</p></div>');
 						var flashvars = {},
 							params = {},
 							attributes = {};
@@ -378,7 +378,8 @@ var installScraper = function(jqlib) {
 						params.allownetworking = "all";
 						attributes.id = "ichelper";
 						swfobject.embedSWF("http://localhost/IndexScraper/flash/ichelper.swf",
-										   "indexCapture_icHelper", "1", "1", "10.0.0", false, flashvars, params, attributes);
+										   "indexCapture_icHelper", "140", "30", "10.0.0", false, flashvars, params, attributes);
+						$('#ichelper').css('visibility','hidden');
 					});
 					//wndw.document.write(child_code);
 					//return $(wndw);
@@ -445,7 +446,8 @@ var installScraper = function(jqlib) {
 						var sname = me.innerText.replace(/[^a-z0-9]/ig, '');
 						$('#ichelper')[0].addFileToZip(sname, data); // ICHELPER
 						cnt+=1;
-						$(me).addClass('ui-state-disabled');
+						//$(me).addClass('ui-state-disabled');
+						$(me).fadeOut('fast');
 						var r = cnt/max_*100;
 						$('#downloader_panel #progressbar').progressbar('value', r);
 						if(r==100) {
@@ -464,6 +466,7 @@ var installScraper = function(jqlib) {
 					var content = zip.generate({base64:true, compression:'DEFLATE'});
 					location.href="data:application/zip;base64,"+content;
 					*/
+					$('#ichelper').css('visibility', 'visible')
 					$('#ichelper')[0].generateZip();
 				}
 			);
