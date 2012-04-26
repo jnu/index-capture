@@ -4,7 +4,7 @@
 	import flash.utils.ByteArray;
 	import flash.net.FileReference;
 	import flash.display.MovieClip;
-	//import org.as3commons.zip;
+	import org.as3commons.zip.Zip;
 	
 	public class ICHelper extends MovieClip
 	{

@@ -207,6 +207,7 @@ var installScraper = function(jqlib) {
 				cp.innerHTML = '<div id="indexScraper_controlPanel" class="ui-widget ui-corner-bottom ui-widget-header"></div>';
 				document.getElementsByTagName('body')[0].appendChild(cp);
 				$('#indexScraper_controlPanel').html("<form id='cp_form'><div id='urlfields'><input type='text' id='url' class='ui-corner-all ui-form-default' /><input type='text' id='urlpattern' class='ui-form-default ui-corner-all' /></div><span id='pathbox'><input type='text' id='path' class='ui-form-default ui-corner-all' /></span><span id='test'>TEST</span><input type='submit' id='go' value='Go' class='ui-form-default' /><span id='subchk'><input type='checkbox' id='subindex' class='ui-form-default' />Sub-index?</span><span id='urlchk'><input type='checkbox' id='urlmacro' class='ui-form-default' />Url Macro?</span><input type='hidden' id='main_index' value='"+index+"' /><ol id='paths' style='visibility:hidden'>"+paths+"</ol></form>");
+				$('#indexScraper_controlPanel #test').css('left', $('#indexScraper_controlPanel #go').offset().left+$('#indexScraper_controlPanel #go').width()+50+'px'); // position TEST to right of GO button
 				$('#indexScraper_controlPanel #go').button();
 				$('#indexScraper_controlPanel').height('34px');
 				$('#indexScraper_controlPanel #urlfields').hide();
