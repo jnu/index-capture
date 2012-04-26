@@ -38,7 +38,7 @@ div#indexScraper_controlPanel input[type=submit] {
 
 div#indexScraper_controlPanel #test {
 	position: absolute;
-	top: 2px;
+	top: 4px;
 	left: 65%;
 	color: #fff;
 	font-weight: bold;
