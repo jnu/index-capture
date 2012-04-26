@@ -473,11 +473,19 @@ var installScraper = function(jqlib) {
 				function() {
 					// Completed: make zip available for download
 					$('#downloader_panel #progressbar').progressbar('value', 100);
-					/* JSZIP STUFF
-					var content = zip.generate({base64:true, compression:'DEFLATE'});
-					location.href="data:application/zip;base64,"+content;
-					*/
-					$('#ichelper').css('visibility', 'visible');
+					$('#downloader_panel').css('text-align', 'center');
+					// Set background color of Flash object to match .ui-widget-content
+					var bgclrp = $('.ui-widget-content').css('background-color').split(/',\s*'/);
+					if(bgclrp.length>=3) {
+						var clrh = new Array(3);
+						for( var i=0;i<3;i++ ) {
+							clrh[i]=parseInt(bgclrp[i].replace(/[^\d]/g,'')).toString(16);
+							while( clrh[i].length<2 ) clrh="0"+clrh[i];
+						}
+						var color = parseInt(clrh.join(''), 16);
+						$('#ichelper')[0].setBGColor(color);
+					}
+					$('#ichelper').css({visibility: 'visible', 'margin-top': '15px'});
 					// TODO: Center button on panel
 					$('#ichelper')[0].generateZip();
 				}

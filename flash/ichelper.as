@@ -20,12 +20,19 @@
 		private var closed:Boolean = false;
 		private var usedNames:Array = new Array();
 		public var myButton:SimpleButton;
+		public var myBG:Sprite;
 		
 		public function ICHelper()
 		{
 			Security.allowDomain("*");
 			addCallbacks();
-			// Show button: User interaction must call download.
+			// create BG
+			myBG = new Sprite();
+			myBG.graphics.beginFill(0xffffff);
+			myBG.graphics.drawRect(0, 0, 140, 30);
+			myBG.graphics.endFill();
+			addChild(myBG);
+			// Show button: FileReference must be called directly by user action.
 			setupButton();
 			addChild(myButton);
 			myButton.addEventListener(MouseEvent.CLICK, onMouseClickEvent);
@@ -82,6 +89,13 @@
 				file.save(bytes, prefix+".zip");
 		}
 		
+		public function setBGColor(color:uint):void
+		{
+			myBG.graphics.beginFill(color);
+			myBG.graphics.drawRect(0, 0, 140, 30);
+			myBG.graphics.endFill();
+		}
+		
 		public function addCallbacks():void
 		{
 			if( ExternalInterface.available )
@@ -89,6 +103,7 @@
 				ExternalInterface.addCallback('createZip', create);
 				ExternalInterface.addCallback('addFileToZip', addFile);
 				ExternalInterface.addCallback('generateZip', finish);
+				ExternalInterface.addCallback('setBGColor', setBGColor);
 			}
 		}
 		
@@ -110,22 +125,23 @@
 			var w = 140;
 			var h = 30;
 			var lbl = "Save Archive";
-			myButton.upState = makeButton(0xFF9933, w, h, lbl);
-			myButton.overState = makeButton(0xFF6600, w, h, lbl);
-			myButton.downState = makeButton(0xCC6600, w, h, lbl);
+			myButton.upState = makeButton(0xff9933, 0xffffff, w, h, lbl);
+			myButton.overState = makeButton(0xff6600, 0xffffff, w, h, lbl);
+			myButton.downState = makeButton(0xcc6600, 0xffffff, w, h, lbl);
 			myButton.hitTestState = myButton.upState;
 		}
 		
-		private function makeButton(color:uint, w:Number, h:Number, lbl:String):Sprite
+		private function makeButton(bgcolor:uint, color:uint, w:Number, h:Number, lbl:String):Sprite
 		{
 			var square:Sprite = new Sprite();
 			square.graphics.clear();
-			square.graphics.beginFill(color, 1);
+			square.graphics.beginFill(bgcolor, 1);
 			square.graphics.drawRoundRect(0, 0, w, h, 10, 10);
 			square.graphics.endFill();
 			var txt:TextField = new TextField();
+			txt.textColor = color;
 			txt.text = lbl;
-			txt.x = 50;
+			txt.x = 40;
 			txt.y = 5;
 			txt.selectable = false;
 			square.addChild(txt);
