@@ -267,6 +267,7 @@ window.BS = {
 						break;
 					case "SWFObject":
 						BS.loadSWFObject(parts[1], load_another);
+						break;
 						// TODO - add functions for other common libs
 					case "jQueryPlugin":
 						BS.loadJQueryPlugin(parts[1], load_another);
