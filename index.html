@@ -41,7 +41,7 @@ issues with misfires in large downloads</a> that hopefully will be resolved soon
 
 <h2><a name="installation">INSTALLATION</a></h2>
 
-<p>Install the bookmarklet by copying and pasting the minified JavaScript into the location field of a new bookmark in your favorite browser. Note that I am assuming Google Chrome is your favorite browser (see <a href="#compatibility">COMPATIBILITY</a>).</p>
+<p>Install the bookmarklet by bookmarking <a href='javascript:(function a(){var b="http://jnu.github.com/index-capture/";var c=b+"js/bootstrap.js";var d=["jQuery:1.7.1","jQueryUI:1.8.18","SWFObject:2.1",b+"js/indexscraper.js"];var e=[b+"css/controlpanel.css",b+"css/sunny/style.css"];var f=function(){(function(b){var c=b(window).getSelectedElement();var f=b(c).getPath(true);b("body").createControlPanel(e,d,a).path(f)})(BS.$)};var g=function(b){var e=document.getElementsByTagName("head")[0];var f=document.createElement("script");var g=false;f.src=c;f.onload=f.onreadystatechange=function(){if(!g&&(!this.readyState||this.readyState=="loaded"||this.readyState=="complete")){g=true;BS.loadLibs(d,function(){installScraper(BS.$);b()});BS.bookmarklet=a;f.onload=f.onreadystatechange=null;e.removeChild(f)}};e.appendChild(f)};if(typeof indexScraperLoaded=="undefined"||!indexScraperLoaded)g(f);else f()})()'>this link</a> in your favorite browser. Note that I am assuming Google Chrome is your favorite browser (see <a href="#compatibility">COMPATIBILITY</a>).</p>
 
 <h2><a name="usage">USAGE</a></h2>
 
@@ -76,11 +76,11 @@ issues with misfires in large downloads</a> that hopefully will be resolved soon
   days trying to sort it all out, I'll say that while AS itself is essentially trivially different from JavaScript,
   learning how to make the parts of a Flash movie come together into a simple .swf somehow ended up being one of the
   most painful experiences in all my days coding (right up there with the parenthetical nightmares I had while learning
-  Lisp). Anyway, fleeting is the memory of pain and everything works now. With the following limitations:
+  Lisp). Anyway, fleeting is the memory of pain and everything works now. With the following areas still giving some grief:
   </p>
 
 <ul>
-<li><p>This script previously used Stuart Knightley's <a href="http://stuartk.com/jszip/">JSZip</a> library to do client-side archiving. This had serious 
+<li><p><b>Zipping</b>. This script previously used Stuart Knightley's <a href="http://stuartk.com/jszip/">JSZip</a> library to do client-side archiving. This had serious 
   limitations on the maximum possible size of the archives and on the options for downloading the archive. I'm happy 
   to say these limitations have been mitigated by using ActionScript to perform the zipping in lieu of JavaScript. I 
   am now using David Chang's <a href="http://nochump.com/blog/archives/15">nochump</a> library to do zipping. A nice 
@@ -91,8 +91,8 @@ issues with misfires in large downloads</a> that hopefully will be resolved soon
   Additionally, nochump is a rather old library and there are surely performance improvements to be made. Resolving
   that issue is not a priority of mine, but maybe if I get bored this summer.
 </p></li>
-<li><p>bootstrap.js -- I wrote this little library to defeat the race condition that crops up when you try to load multiple interdependent JavaScript libraries from a bookmarklet. It's just a chain loader that accepts a queue of scripts (or stylesheets, even though their order doesn't (ever?) matter) and loads them sequentially. More interestingly, it is meant to avoid conflicts with multiple versions of libraries such as jQuery. The idea is that the bookmarklet should not break any of the functionality of the target page, which overwriting the target page's version of a library with a different one could very easily do. Sadly, there is at least one problem with this code, though I haven't quite figured out what it is (it breaks when trying to install certain jQuery plugins). It seems like another race condition, which is unsurprising. I hope to get this fixed soon.</p></li>
-<li><p>Cross-domain issues. One motivation for writing a bookmark for this was that it would allow for downloading the links incredibly easily by using AJAX requests AS LONG AS THE LINKS ARE ON THE SAME DOMAIN AS THE INDEX PAGE. Your browser will forbid you from completing cross-domain AJAX requests pursuant to the same-origin policy. As a result, this bookmarklet is not ideal for downloading things like SERPs. Of course, anything is possible: if you are desperate, scoot around the SOP in the usual way, by loading the target page through a proxy and running the bookmarklet there.</p></li>
+<li><p><b>Bootstraping</b> -- I wrote a little library to defeat the race condition that crops up when you try to load multiple interdependent JavaScript libraries from a bookmarklet. It's just a chain loader that accepts a queue of scripts (or stylesheets, even though their order doesn't (ever?) matter) and loads them sequentially. More interestingly, it is meant to avoid conflicts with multiple versions of libraries such as jQuery. The idea is that the bookmarklet should not break any of the functionality of the target page, which overwriting the target page's version of a library with a different one could very easily do. Sadly, there is at least one problem with this code, though I haven't quite figured out what it is (it breaks when trying to install certain jQuery plugins). It seems like another race condition, which is unsurprising. I hope to get this fixed soon.</p></li>
+<li><p><b>Cross-domain-ing.</b> One motivation for writing a bookmark for this was that it would allow for downloading the links incredibly easily by using AJAX requests AS LONG AS THE LINKS ARE ON THE SAME DOMAIN AS THE INDEX PAGE. Your browser will forbid you from completing cross-domain AJAX requests pursuant to the same-origin policy. As a result, this bookmarklet is not ideal for downloading things like SERPs. Of course, anything is possible: if you are desperate, scoot around the SOP in the usual way, by loading the target page through a proxy and running the bookmarklet there.</p></li>
 </ul><p>Apart from those bugs, the source at the moment is sloppy and unrefined. There are some vestigial methods that unnecessarily clutter the $.fn namespace. Hopefully I'll have time to do some tidying up soon.</p>
 
 <h2><a name="compatibility">COMPATIBILITY</a></h2>
@@ -132,7 +132,7 @@ all"). THESE CAPABILITIES ARE IN PROGRESS! HOPEFULLY THEY WILL BE FINISHED SOON!
 <p>More detailed information is available in the source. I will be extracting and consolidating these documentations in the near future.</p>
       </section>
       <footer>
-        <p>This project is maintained by <a href="https://github.com/jnu">jnu</a></p>
+        <p>This project is maintained by <a href="https://github.com/jnu">Joseph Nudell</a></p>
         <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
       </footer>
     </div>
