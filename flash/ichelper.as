@@ -15,6 +15,7 @@
 		private var zip:ZipOutput;
 		private var prefix:String;
 		private var init:Boolean = false;
+		private var closed:Boolean = false;
 		private var usedNames:Array = new Array();
 		public var myButton:SimpleButton;
 		
@@ -22,6 +23,10 @@
 		{
 			Security.allowDomain("*");
 			addCallbacks();
+			// Show button: User interaction must call download.
+			setupButton();
+			addChild(myButton);
+			myButton.addEventListener(MouseEvent.CLICK, onMouseClickEvent);
 		}
 		
 		public function create(myPrefix:String="zip"):void
@@ -31,52 +36,48 @@
 			init = true;
 		}
 		
-		public function addFile(myName:String="", myData:String=""):void
+		public function addFile(myName:String="", myData:String=""):Boolean
 		{
-			if( !init )
-			{
-				toJS(false);
-				return;
+			if( !init ) return false;
+			try {
+				myName = prefix + '-' + myName;
+				var n:Number = 0;
+				while( usedNames.indexOf(myName)+1 )
+				{
+					// Iterate until a unique name is found: increment
+					// n and affix to find a unique name.
+					if(n++) myName = myName.substr(0, myName.lastIndexOf('-'));
+					myName += '-' + n;
+				}
+				usedNames.push(myName);
+				var data:ByteArray = new ByteArray();
+				data.writeUTF(myData);
+				var ze:ZipEntry = new ZipEntry(myName);
+				zip.putNextEntry(ze);
+				zip.write(data);
+				zip.closeEntry();
+			} catch(e:Error) {
+				// Not sure what errors occur, but some do.
+				ExternalInterface.call('console.log', 'Error ('+e.errorID+'), '+e.name+': '+e.message)
+				return false;
 			}
-			myName = prefix + '-' + myName;
-			var n:Number = 0;
-			while( usedNames.indexOf(myName)+1 )
-			{
-				// Iterate until a unique name is found: increment
-				// n and affix to find a unique name.
-				if(n++) myName = myName.substr(0, myName.lastIndexOf('-'));
-				myName += '-' + n;
-			}
-			usedNames.push(myName);
-			var data:ByteArray = new ByteArray();
-			data.writeUTF(myData);
-			var ze:ZipEntry = new ZipEntry(myName);
-			zip.putNextEntry(ze);
-			zip.write(data);
-			zip.closeEntry();
-			toJS(true);
+			return true;
 		}
 		
-		public function finish():void
+		public function finish():Boolean
 		{
-			if(!init)
-			{
-				toJS(false);
-				return;
-			}
+			if(!init) return false;
 			zip.finish();
-			// Show button: User interaction must call download.
-			setupButton();
-			addChild(myButton);
-			myButton.addEventListener(MouseEvent.CLICK, onMouseClickEvent);
+			closed = true;
+			return true;
 		}
 		
 		protected function onMouseClickEvent(e:Event):void
 		{
+				if( !closed ) zip.finish();
 				var bytes:ByteArray = zip.byteArray;
 				var file:FileReference = new FileReference();
 				file.save(bytes, prefix+".zip");
-				toJS(true);
 		}
 		
 		public function addCallbacks():void

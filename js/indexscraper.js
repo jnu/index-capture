@@ -444,7 +444,13 @@ var installScraper = function(jqlib) {
 						zip.file(sname, data); // store data in file
 						*/
 						var sname = me.innerText.replace(/[^a-z0-9]/ig, '');
-						$('#ichelper')[0].addFileToZip(sname, data); // ICHELPER
+						var _ecnt = 0;
+						var _emax = 5;
+						while( !$('#ichelper')[0].addFileToZip(sname, data) && _ecnt++<_emax ) {
+							 // ICHELPER returns false if there was an error adding file to zip.
+							 // Might have to retry $.get altogether on error
+							 console.log("Error adding '"+sname+"' to zip. Retrying ("+_ecnt+") ...");
+						}
 						cnt+=1;
 						//$(me).addClass('ui-state-disabled');
 						$(me).fadeOut('fast');
