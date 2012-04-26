@@ -1,76 +1,13 @@
 /* File:         indexscraper.js
  * Author:       Joseph Nudell
- * Last Updated: April 24, 2012
+ * Last Updated: April 26, 2012
  *
  * REQUIREMENTS
  *  ---
- * - Uses the zip creating functions of JSZip (included)
+ * - ichelper.swf (included)
  * - jQuery (tested on 1.7.1)
  * - jQuery-UI (tested on 1.8.18)
- *
- * WARNING
- *  ---
- * Script is very rough. Hope to polish soon. Documentation at least is correct.
- *
- * ABOUT
- *  ---
- * The purpose of this script is to extract a list of links from a table or
- * table-like structure (e.g., <ul/>, nested <div/>, etc.) from an HTML document.
- * This code is loaded from a bookmarklet (see bookmarklet.js for more info).
- *
- * In order to limit the already excessive amount of scripts that must be loaded
- * to get this app to work, all of the UI elements are generated at various places
- * in this script. Very ugly but I've tried to comment pedantically.
- * 
- * DOCUMENTATION
- *  ---
- * This script is designed as a jQuery plugin. IMPORTANTLY it does NOT install
- * automatically when the script is loaded. Instead, you must manually call the
- * function installScraper() manually, passing as an argument the instance of
- * jQuery you wish to use. The motivation for this extra step is that the script
- * is designed to be loaded from a bookmarklet into a target page. This target
- * page may or may not use jQuery, and if they do, the jQuery version might not
- * be compatible. They might use a different library which uses the $ variable
- * for something entirely different. Since this is the case, the bookmarklet is
- * designed to bootstrap a good version of jQuery if it is not already loaded in
- * a way that will not break the page's scripts. The scraper plugin can then be
- * installed easily on the bootstrapped instance of jQuery by passing this version
- * (which should be stored in bs$) to installScraper(). 
- *
- * After installing the scraper, you can use the following functions to interact
- * with the scraper.
- *
- * - $.getSelectedElement()	Call this on a window. It will return the element
- *							selected in this window.
- *
- * - $.getPath() 		Call this on an element. This function will inspect the
- *  					selected text in the window and returns its path as a
- * 						CSS selector (string). If the argument 'true' is passed,
- *						the method will try to determine the path to a list of
- *						elements similar to this one. It is not always right, but 
- * 						it very often is.
- * - $.createControlPanel()	
- *						Doesn't really matter what you call this on. It will
- *						create a control panel and place it in the body of the
- *						active window.
- * - $.path([selector])	Call this on a control panel. It gets and sets the text
- *						input within the control panel that holds the CSS
- *						selector. You can modify this path so that it accurately
- *						selects all of the elements you want it to. I've also
- * 						included James Padolsey's jQuery :regex selector extension
- *						to make the targeting power of the paths here incredibly
- *						precise (or at least as precise as your regex!).
- * 
- * The rest of the functions in this script, while important, are called by the
- * aforementioned functions, so you probably won't have to deal with them. See
- * the comments to the functions for information about them. None is terribly
- * complicated.
- *
- * Another feature of this script is the FilterTag object. These objects are used
- * to allow the user to filter the list of links according to either link text or
- * href using regular expressions. See the comments to this object for information
- * on the syntax used for regular expressions and other information on this object.
- * 
+ * - SWFObject (tested on 2.1)
  *
  * LICENSE
  *  ---
@@ -207,6 +144,7 @@ var installScraper = function(jqlib) {
 				cp.innerHTML = '<div id="indexScraper_controlPanel" class="ui-widget ui-corner-bottom ui-widget-header"></div>';
 				document.getElementsByTagName('body')[0].appendChild(cp);
 				$('#indexScraper_controlPanel').html("<form id='cp_form'><div id='urlfields'><input type='text' id='url' class='ui-corner-all ui-form-default' /><input type='text' id='urlpattern' class='ui-form-default ui-corner-all' /></div><span id='pathbox'><input type='text' id='path' class='ui-form-default ui-corner-all' /></span><span id='test'>TEST</span><input type='submit' id='go' value='Go' class='ui-form-default' /><span id='subchk'><input type='checkbox' id='subindex' class='ui-form-default' />Sub-index?</span><span id='urlchk'><input type='checkbox' id='urlmacro' class='ui-form-default' />Url Macro?</span><input type='hidden' id='main_index' value='"+index+"' /><ol id='paths' style='visibility:hidden'>"+paths+"</ol></form>");
+				$('#indexScraper_controlPanel #test').css('left', $('#indexScraper_controlPanel #go').offset().left+$('#indexScraper_controlPanel #go').width()+50+'px'); // position TEST to right of GO button
 				$('#indexScraper_controlPanel #go').button();
 				$('#indexScraper_controlPanel').height('34px');
 				$('#indexScraper_controlPanel #urlfields').hide();
@@ -365,8 +303,21 @@ var installScraper = function(jqlib) {
 					BS.loadLibs(BS.scripts, function() {
 						BS.$('body').append('<div id="downloader_panel"/>');
 						BS.$('#downloader_panel').dialog({height: 'auto', width: '400px', closeOnEscape: true, minHeight: '300px', modal: true, autoOpen: true, title: 'Downloader', position: 'top'});
+						BS.$('#downloader_panel').parent().css('top', $('indexScraper_controlPanel').height()+50); // adjust dialog top
 						BS.$('#downloader_panel').html(child_code);
 						BS.$('#download').button();
+						
+						// Insert Flash object into page
+						BS.$('#downloader_panel').append('<div id="indexCapture_icHelper"><p>You must update your Flash player!</p></div>');
+						var flashvars = {},
+							params = {},
+							attributes = {};
+						params.allowscriptaccess = "always";
+						params.allownetworking = "all";
+						attributes.id = "ichelper";
+						swfobject.embedSWF("http://localhost/IndexScraper/flash/ichelper.swf",
+										   "indexCapture_icHelper", "140", "30", "10.0.0", false, flashvars, params, attributes);
+						$('#ichelper').css('visibility','hidden');
 					});
 					//wndw.document.write(child_code);
 					//return $(wndw);
@@ -400,10 +351,15 @@ var installScraper = function(jqlib) {
 			if( typeof(name)=='undefined' ) name = 'dl';
 			if( typeof(overwrite)=='undefined' ) overwrite = false;
 			
-			// USE $.GET AND JSZIP FOR IN-HOUSE ZIPPING! DOPE!
+			// Flash should be inserted already
+			
+			// XXXXXXXXXXXXXXXXXXXXX USE $.GET AND JSZIP FOR IN-HOUSE ZIPPING
+			// Use $.GET and AS3 helper for client-side zipping
 			$('#downloader_panel #upper').html('<div id="progressbar"/>');
 			$('#downloader_panel #progressbar').progressbar();
-			var zip = new JSZip();
+			//var zip = new JSZip();
+			// INIT FLASH ZIP
+			$('#ichelper')[0].createZip(name);
 			var traverse = function(el, callback) {
 				var cnt = 0;
 				var max_ = el.find('a').length;
@@ -413,6 +369,7 @@ var installScraper = function(jqlib) {
 					//links.push([href, myname]);
 					$.get(me.href, function(data) {
 						// Submit asynchronous request for full HTML of page
+						/*  JSZIP STUFF
 						var sname = name+'-'+me.innerText.replace(/[^a-z0-9]/ig, ''); // sanitized name
 						var n = 0;
 						while(zip.file(sname)!=null) {
@@ -423,8 +380,23 @@ var installScraper = function(jqlib) {
 							sname+='-'+n;
 						}
 						zip.file(sname, data); // store data in file
+						*/
+						var sname = me.innerText.replace(/[^a-z0-9]/ig, '');
+						var _ecnt = 0;
+						var _emax = 5;
+						while( !$('#ichelper')[0].addFileToZip(sname, data) && _ecnt++<_emax ) {
+							 // ICHELPER returns false if there was an error adding file to zip.
+							 // Might have to retry $.get altogether on error
+							 console.log("Error adding '"+sname+"' to zip. Retrying ("+_ecnt+") ...");
+						}
 						cnt+=1;
-						$(me).addClass('ui-state-disabled');
+						//$(me).addClass('ui-state-disabled');
+						if(_ecnt==_emax) {
+							// There was an error zipping this file.
+							$(me).css('color', '#f00');
+						}else{
+							$(me).fadeOut('fast');
+						}
 						var r = cnt/max_*100;
 						$('#downloader_panel #progressbar').progressbar('value', r);
 						if(r==100) {
@@ -439,8 +411,21 @@ var installScraper = function(jqlib) {
 				function() {
 					// Completed: make zip available for download
 					$('#downloader_panel #progressbar').progressbar('value', 100);
-					var content = zip.generate({base64:true, compression:'DEFLATE'});
-					location.href="data:application/zip;base64,"+content;
+					$('#downloader_panel').css('text-align', 'center');
+					// Set background color of Flash object to match .ui-widget-content
+					var bgclrp = $('.ui-widget-content').css('background-color').split(/',\s*'/);
+					if(bgclrp.length>=3) {
+						var clrh = new Array(3);
+						for( var i=0;i<3;i++ ) {
+							clrh[i]=parseInt(bgclrp[i].replace(/[^\d]/g,'')).toString(16);
+							while( clrh[i].length<2 ) clrh="0"+clrh[i];
+						}
+						var color = parseInt(clrh.join(''), 16);
+						$('#ichelper')[0].setBGColor(color);
+					}
+					$('#ichelper').css({visibility: 'visible', 'margin-top': '15px'});
+					// TODO: Center button on panel
+					$('#ichelper')[0].generateZip();
 				}
 			);
 
@@ -685,6 +670,11 @@ var installScraper = function(jqlib) {
 };
 
 
+function fromAS(obj) {
+	// Just in case communication from AS becomes necessary
+	return;
+}
 
 // Set loaded global, so Bookmarklet knows.
 window.indexScraperLoaded = true;
+

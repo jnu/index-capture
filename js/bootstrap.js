@@ -1,6 +1,6 @@
 /* File:         bootstrap.js
  * Author:       Joseph Nudell
- * Last Updated: April 23, 2012
+ * Last Updated: April 26, 2012
  *
  *
  * DOCUMENTATION
@@ -38,7 +38,7 @@
  * the BS namespace to avoid replacing the page's version.
  *
  * IMPORTANT - The library is in the alpha stage of development. More libraries are
- * to be added in the future, currently only jQuery and jQuery-UI shortcuts are supported.
+ * to be added in the future, currently only SWFObject, jQuery and jQuery-UI shortcuts are supported.
  * THERE ARE SOME ISSUES WITH INSTALLING jQuery PLUGINS ON THE CORRECT (BS.$) VERSION OF
  * jQuery! THIS IS A BIG PROBLEM AND MUST BE FIXED SOON!
  *
@@ -223,6 +223,13 @@ window.BS = {
 	},
 	
 	
+	loadSWFObject: function(version, callback) {
+		// Installs SWFObject
+		var swfobj = "http://ajax.googleapis.com/ajax/libs/swfobject/"+version+"/swfobject.js";
+		BS.loadScript(swfobj, callback);
+	},
+	
+	
 	loadJQueryPlugin: function(url, callback) {
 		// Temporarily aliases BS.$ to jQuery to install plugin, does not
 		// interfere with target page's jQuery.
@@ -257,6 +264,9 @@ window.BS = {
 						break;
 					case "jQueryUI":
 						BS.loadJQueryUI(parts[1], load_another);
+						break;
+					case "SWFObject":
+						BS.loadSWFObject(parts[1], load_another);
 						break;
 						// TODO - add functions for other common libs
 					case "jQueryPlugin":
