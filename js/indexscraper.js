@@ -453,7 +453,12 @@ var installScraper = function(jqlib) {
 						}
 						cnt+=1;
 						//$(me).addClass('ui-state-disabled');
-						$(me).fadeOut('fast');
+						if(_ecnt==_emax) {
+							// There was an error zipping this file.
+							$(me).css('color', '#f00');
+						}else{
+							$(me).fadeOut('fast');
+						}
 						var r = cnt/max_*100;
 						$('#downloader_panel #progressbar').progressbar('value', r);
 						if(r==100) {
