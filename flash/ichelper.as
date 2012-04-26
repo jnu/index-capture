@@ -48,7 +48,6 @@
 				myName += '-' + n;
 			}
 			usedNames.push(myName);
-			ExternalInterface.call('console.log', "Adding "+myName);
 			var data:ByteArray = new ByteArray();
 			data.writeUTF(myData);
 			var ze:ZipEntry = new ZipEntry(myName);
@@ -70,13 +69,11 @@
 			setupButton();
 			addChild(myButton);
 			myButton.addEventListener(MouseEvent.CLICK, onMouseClickEvent);
-			ExternalInterface.call('console.log', "Made button.");
 		}
 		
 		protected function onMouseClickEvent(e:Event):void
 		{
 				var bytes:ByteArray = zip.byteArray;
-				ExternalInterface.call('console.log', "Got bytes.");
 				var file:FileReference = new FileReference();
 				file.save(bytes, prefix+".zip");
 				toJS(true);
@@ -89,7 +86,6 @@
 				ExternalInterface.addCallback('createZip', create);
 				ExternalInterface.addCallback('addFileToZip', addFile);
 				ExternalInterface.addCallback('generateZip', finish);
-				ExternalInterface.call('console.log', "Flash Zip Helper: Adding callbacks");
 			}
 		}
 		
@@ -106,8 +102,8 @@
 		private function setupButton():void
 		{
 			myButton = new SimpleButton();
-			myButton.x = 70;
-			myButton.y = 15;
+			myButton.x = 0;
+			myButton.y = 0;
 			var width = 140;
 			var height = 30;
 			myButton.upState = makeSquare(0xFF9933, width, height);

@@ -713,7 +713,8 @@ var installScraper = function(jqlib) {
 
 
 function fromAS(obj) {
-	console.log("Received value from AS: "+obj);
+	// Just in case communication from AS becomes necessary
+	return;
 }
 
 // Set loaded global, so Bookmarklet knows.
