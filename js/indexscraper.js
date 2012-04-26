@@ -366,6 +366,7 @@ var installScraper = function(jqlib) {
 					BS.loadLibs(BS.scripts, function() {
 						BS.$('body').append('<div id="downloader_panel"/>');
 						BS.$('#downloader_panel').dialog({height: 'auto', width: '400px', closeOnEscape: true, minHeight: '300px', modal: true, autoOpen: true, title: 'Downloader', position: 'top'});
+						BS.$('#downloader_panel').parent().css('top', $('indexScraper_controlPanel').height()+10); // adjust dialog top
 						BS.$('#downloader_panel').html(child_code);
 						BS.$('#download').button();
 						
