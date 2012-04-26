@@ -31,8 +31,8 @@
 
 <h2><a name="updates">RECENT (NOTEWORTHY) UPDATES</a></h2>
 <ul>
-<li>4/26/2012 - I'm proud to say I've replaced <a href="http://stuartk.com/jszip/">JSZip</a> with a SWF object employing <a href="http://nochump.com/blog/archives/15">nochump</a>. Now archives can now exceed more than a megabyte (haven't found an upper bound yet, but the largest I've tried is ~8MB). This has created some
-issues with misfires in large downloads that hopefully will be resolved soon.
+<li>4/26/2012 - I'm proud to say I've replaced <a href="http://stuartk.com/jszip/">JSZip</a> with a SWF object employing <a href="http://nochump.com/blog/archives/15">nochump</a>. Now archives can now exceed more than a megabyte (haven't found an upper bound yet, but the largest I've tried is ~8MB). This has created <a href="#issues">some
+issues with misfires in large downloads</a> that hopefully will be resolved soon.
 </ul>
 
 <h2><a name="about">ABOUT</a></h2>
@@ -67,7 +67,7 @@ issues with misfires in large downloads that hopefully will be resolved soon.
 <li>b    "Both" - Target both href and displayed text (default).</li>
 </ul>
 
-<h2><a name="details">DETAILS, ISSUES, &amp; LIMITATIONS</a></h2>
+<h2><a name="issues">DETAILS, ISSUES, &amp; LIMITATIONS</a></h2>
 
 <p>This was the first time I've written in anything substantial in JavaScript in about 10 years. I was amazed by all 
   of the libraries that are currently available that made writing this code so much easier. I was also
@@ -80,10 +80,10 @@ issues with misfires in large downloads that hopefully will be resolved soon.
   </p>
 
 <ul>
-<li><p>This script previously used Stuart Knightley's JSZip library to do client-side archiving. This had serious 
+<li><p>This script previously used Stuart Knightley's <a href="http://stuartk.com/jszip/">JSZip</a> library to do client-side archiving. This had serious 
   limitations on the maximum possible size of the archives and on the options for downloading the archive. I'm happy 
   to say these limitations have been mitigated by using ActionScript to perform the zipping in lieu of JavaScript. I 
-  am now using dchang's <a href="http://nochump.com/blog/archives/15">nochump</a> library to do zipping. A nice 
+  am now using David Chang's <a href="http://nochump.com/blog/archives/15">nochump</a> library to do zipping. A nice 
   side-effect of this is that I am also using Flash to execute the download of the archive, and Flash allows the user 
   to select a location and name for the download (cf. Doug Neiner's <a href="https://github.com/dcneiner/Downloadify">Downloadify</a>,
   which I am <i>not</i> using but is generally a very useful library). Of course, there are some kinks that need ironing:
@@ -107,8 +107,8 @@ try to use them. The former will allow you to traverse sub-directories: for exam
 if a directory page has an alphabetical index of sub-directories and does not allow
 you to see all of its contents at once, you will still be able to archive everything
 by defining two (or more) levels of traversal. The "Url-macro?" feature will allow
-you to input a URL-template such as "<a href="http://www.example.com/?a=%7B1%7D">http://www.example.com/?a={1}</a>" and a range
-such as "A-Z" in order to traverse sub-directories more programmatically (which 
+you to input a URL-template such as <i>http://www.example.com/?a={1}</i> and a range
+such as <i>A-Z</i> in order to traverse sub-directories more programmatically (which 
 is sometimes necessary in order to pass other options to the server such as "show
 all"). THESE CAPABILITIES ARE IN PROGRESS! HOPEFULLY THEY WILL BE FINISHED SOON!</p>
 
