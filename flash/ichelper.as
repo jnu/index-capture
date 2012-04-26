@@ -8,6 +8,8 @@
 	import flash.display.SimpleButton;
 	import flash.display.Shape;
 	import flash.display.MovieClip;
+	import flash.display.Sprite;
+	import flash.text.TextField;
 	import nochump.util.zip.*;
 	
 	public class ICHelper extends MovieClip
@@ -105,20 +107,28 @@
 			myButton = new SimpleButton();
 			myButton.x = 0;
 			myButton.y = 0;
-			var width = 140;
-			var height = 30;
-			myButton.upState = makeSquare(0xFF9933, width, height);
-			myButton.overState = makeSquare(0xFF6600, width, height);
-			myButton.downState = makeSquare(0xCC6600, width, height);
+			var w = 140;
+			var h = 30;
+			var lbl = "Save Archive";
+			myButton.upState = makeButton(0xFF9933, w, h, lbl);
+			myButton.overState = makeButton(0xFF6600, w, h, lbl);
+			myButton.downState = makeButton(0xCC6600, w, h, lbl);
 			myButton.hitTestState = myButton.upState;
 		}
 		
-		private function makeSquare(color:uint, width:Number, height:Number):Shape
+		private function makeButton(color:uint, w:Number, h:Number, lbl:String):Sprite
 		{
-			var square:Shape = new Shape();
+			var square:Sprite = new Sprite();
+			square.graphics.clear();
 			square.graphics.beginFill(color, 1);
-			square.graphics.drawRect(0, 0, width, height);
+			square.graphics.drawRoundRect(0, 0, w, h, 10, 10);
 			square.graphics.endFill();
+			var txt:TextField = new TextField();
+			txt.text = lbl;
+			txt.x = 50;
+			txt.y = 5;
+			txt.selectable = false;
+			square.addChild(txt);
 			return square;
 		}
 	}

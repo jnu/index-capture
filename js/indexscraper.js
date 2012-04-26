@@ -472,7 +472,8 @@ var installScraper = function(jqlib) {
 					var content = zip.generate({base64:true, compression:'DEFLATE'});
 					location.href="data:application/zip;base64,"+content;
 					*/
-					$('#ichelper').css('visibility', 'visible')
+					$('#ichelper').css('visibility', 'visible');
+					// TODO: Center button on panel
 					$('#ichelper')[0].generateZip();
 				}
 			);
