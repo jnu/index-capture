@@ -31,7 +31,7 @@
 
 <h2><a name="updates">RECENT (NOTEWORTHY) UPDATES</a></h2>
 <ul>
-<li>4/26/2012 - I'm proud to say I've replaced <a href="http://stuartk.com/jszip/">JSZip</a> with a SWF object employing <a href="http://nochump.com/blog/archives/15">nochump</a>. Now archives can now exceed more than a megabyte (haven't found an upper bound yet, but the largest I've tried is ~8MB). This has created <a href="#issues">some
+<li>4/26/2012 - I'm proud to say I've replaced <a href="http://stuartk.com/jszip/">JSZip</a> with a SWF object employing <a href="http://nochump.com/blog/archives/15">nochump</a>. Now archives can now be larger just a megabyte (haven't found an upper bound yet, the largest I've tried is ~8MB). This has created <a href="#issues">some
 issues with misfires in large downloads</a> that hopefully will be resolved soon.
 </ul>
 
@@ -87,7 +87,7 @@ issues with misfires in large downloads</a> that hopefully will be resolved soon
   side-effect of this is that I am also using Flash to execute the download of the archive, and Flash allows the user 
   to select a location and name for the download (cf. Doug Neiner's <a href="https://github.com/dcneiner/Downloadify">Downloadify</a>,
   which I am <i>not</i> using but is generally a very useful library). Of course, there are some kinks that need ironing:
-  on large downloads (several hundred pages), up to 10% of the pages fail to be archived. I hope to fix this soon.
+  on large downloads (several hundred pages), up to 1% of the pages fail to be archived. I hope to fix this soon.
   Additionally, nochump is a rather old library and there are surely performance improvements to be made. Resolving
   that issue is not a priority of mine, but maybe if I get bored this summer.
 </p></li>
