@@ -80,7 +80,7 @@ issues with misfires in large downloads</a> that hopefully will be resolved soon
   </p>
 
 <ul>
-<li><p><b>Zipping</b>. This script previously used Stuart Knightley's <a href="http://stuartk.com/jszip/">JSZip</a> library to do client-side archiving. This had serious 
+<li><p><b>Zipping.</b> This script previously used Stuart Knightley's <a href="http://stuartk.com/jszip/">JSZip</a> library to do client-side archiving. This had serious 
   limitations on the maximum possible size of the archives and on the options for downloading the archive. I'm happy 
   to say these limitations have been mitigated by using ActionScript to perform the zipping in lieu of JavaScript. I 
   am now using David Chang's <a href="http://nochump.com/blog/archives/15">nochump</a> library to do zipping. A nice 
@@ -91,7 +91,8 @@ issues with misfires in large downloads</a> that hopefully will be resolved soon
   Additionally, nochump is a rather old library and there are surely performance improvements to be made. Resolving
   that issue is not a priority of mine, but maybe if I get bored this summer.
 </p></li>
-<li><p><b>Bootstraping</b> -- I wrote a little library to defeat the race condition that crops up when you try to load multiple interdependent JavaScript libraries from a bookmarklet. It's just a chain loader that accepts a queue of scripts (or stylesheets, even though their order doesn't (ever?) matter) and loads them sequentially. More interestingly, it is meant to avoid conflicts with multiple versions of libraries such as jQuery. The idea is that the bookmarklet should not break any of the functionality of the target page, which overwriting the target page's version of a library with a different one could very easily do. Sadly, there is at least one problem with this code, though I haven't quite figured out what it is (it breaks when trying to install certain jQuery plugins). It seems like another race condition, which is unsurprising. I hope to get this fixed soon.</p></li>
+<li><p><b>Bootstraping.</b> I wrote a little library to defeat the race condition that crops up when you try to load multiple interdependent JavaScript libraries from a bookmarklet. It's just a chain loader that accepts a queue of scripts (or stylesheets, even though their order doesn't (ever?) matter) and loads them sequentially. More interestingly, it is meant to avoid conflicts with multiple versions of libraries such as jQuery. The idea is that the bookmarklet should not break any of the functionality of the target page, which overwriting the target page's version of a library with a different one could very easily do. Sadly, there is at least one problem with this code, though I haven't quite figured out what it is (it breaks when trying to install certain jQuery plugins). It seems like another race condition, which is unsurprising. I hope to get this fixed soon.</p></li>
+
 <li><p><b>Cross-domain-ing.</b> One motivation for writing a bookmark for this was that it would allow for downloading the links incredibly easily by using AJAX requests AS LONG AS THE LINKS ARE ON THE SAME DOMAIN AS THE INDEX PAGE. Your browser will forbid you from completing cross-domain AJAX requests pursuant to the same-origin policy. As a result, this bookmarklet is not ideal for downloading things like SERPs. Of course, anything is possible: if you are desperate, scoot around the SOP in the usual way, by loading the target page through a proxy and running the bookmarklet there.</p></li>
 </ul><p>Apart from those bugs, the source at the moment is sloppy and unrefined. There are some vestigial methods that unnecessarily clutter the $.fn namespace. Hopefully I'll have time to do some tidying up soon.</p>
 
